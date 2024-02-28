@@ -1,7 +1,9 @@
 CREATE DATABASE trunk;
-USE trunk;
+
+-- Connect to the trunk database
+\c trunk;
+
 CREATE TABLE messages (
-    message_id INT NOT NULL AUTO_INCREMENT,
-    message_content VARCHAR (50) NOT NULL,
-    PRIMARY KEY (message_id)
+    message_id SERIAL PRIMARY KEY,
+    message_content VARCHAR (50) NOT NULL
 );

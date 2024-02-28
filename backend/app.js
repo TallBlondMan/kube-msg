@@ -1,20 +1,22 @@
 const express = require('express');
-const mysql = require('mysql');
+const { Pool } = require('pg');
 
 // Create MySQL connection
-const db = mysql.createConnection({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE
+const database = new Pool({
+  user: process.env.PG_USER,
+  host: process.env.PG_HOST,
+  database: process.env.PG_DATABASE,
+  password: process.env.PG_PASSWORD,
+  port: process.env.PG_PORT,
 });
 
 // Connect to MySQL
-db.connect((err) => {
+database.connect((err) => {
   if (err) {
+    console.log(`Error connecting to ${process.env.MYSQL_HOST}`)
     throw err;
   }
-  console.log('Connected to database at ${process.env.MYSQL_HOST}');
+  console.log(`Connected to database at ${process.env.MYSQL_HOST}`);
 });
 
 const app = express();
@@ -23,7 +25,7 @@ const app = express();
 app.use(express.json());
 
 // Route to handle POST requests from frontend
-app.post('/write', (req, res) => {
+app.post('/write-to-database', (req, res) => {
   const { message } = req.body;
   
   // Insert the message into the database
