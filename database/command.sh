@@ -1,2 +1,1 @@
-docker run -dp 3306:3306 -v ${PWD}/create-db.sql:/docker-entrypoint-initdb.d/create.sql --name db -e MYSQL_ROOT_PASSWORD=password -e MYSQL_USER=admin -e MYSQL_PASSWORD=pass1 mysql 
-docker run -dp  5432:5432 -v ${PWD}/create-db.sql:/docker-entrypoint-initdb.d/create.sql --name db -e POSTGRES_PASSWORD=pass1 -e POSTGRES_USER=admin postgres
+docker run -dp  5432:5432 -v ${PWD}/create-db.sql:/docker-entrypoint-initdb.d/create.sql --name db --hostname db -e POSTGRES_PASSWORD=pass1 -e POSTGRES_USER=admin postgres

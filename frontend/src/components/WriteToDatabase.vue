@@ -16,7 +16,7 @@ export default {
   methods: {
     async sendRequest() {
       try {
-        const response = await fetch('http://localhost:3000/write-to-database', {
+        const response = await fetch(`http://${VUE_APP_API_HOST}:${VUE_APP_API_PORT}/write-to-database`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
