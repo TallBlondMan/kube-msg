@@ -27,6 +27,7 @@ const sendMessage = (req, res) => {
     database.query(psql, [message], (err, result) => {
         if (err) {
             res.status(500).json({ error: 'Error writing to database' });
+            console.log(err.message)
         } else {
             res.status(200).json({ message: 'Message written to database successfully' });
         }
