@@ -27,9 +27,13 @@ const sendMessage = (req, res) => {
     database.query(psql, [message], (err, result) => {
         if (err) {
             res.status(500).json({ error: 'Error writing to database' });
+            console.log(`Message '${message}' received`);
+            console.log(`Request from: ${req.ip}`);
             console.log(err.message)
         } else {
             res.status(200).json({ message: 'Message written to database successfully' });
+            console.log(`Message '${message}' received`);
+            console.log(`Request from: ${req.ip}`);
         }
     })
 }
@@ -41,6 +45,7 @@ const showMessage = (req, res) => {
 const displayStatus = (req, res) => {
     // Some default message to display
     res.send('Hello World!')
+    console.log(`Hello request received from ${req.ip}`);
 }
 // This makes sure our modules are available in app.js
 module.exports = {

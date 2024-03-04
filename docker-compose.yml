@@ -9,12 +9,13 @@ services:
     ports:
     - 5432:5432
   frontend:
-    image: km-front:v1.0.5
+    image: km-front:v1.0.5 # v1.0.6 newest
+    
     env_file: .env
     ports:
     - 8888:80
   backend:
-    image: km-back:v1.0.3
+    image: km-back:v1.0.4
     env_file: .env
     ports:
     - 3000:3000
