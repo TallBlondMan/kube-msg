@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import axios from '../http-commons'
+
 export default {
   data() {
     return {
@@ -16,20 +18,29 @@ export default {
   methods: {
     async sendRequest() {
       try {
-        const response = await fetch(`http://${process.env.VUE_APP_API_HOST}:${process.env.VUE_APP_API_PORT}/api/write-to-database`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ message: 'Hello from frontend!' })
-        });
-        const data = await response.json();
-        this.message = data.message;
+        const response = await axios.post('write-to-database', { message: 'Hello from frontend!' });
+        this.message = response.data.message;
       } catch (error) {
         console.error('Error:', error);
         this.message = 'Error sending request';
       }
     }
+    // async sendRequest() {
+    //   try {
+    //     const response = await fetch(`http://${process.env.VUE_APP_API_HOST}:${process.env.VUE_APP_API_PORT}/api/write-to-database`, {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       },
+    //       body: JSON.stringify({ message: 'Hello from frontend!' })
+    //     });
+    //     const data = await response.json();
+    //     this.message = data.message;
+    //   } catch (error) {
+    //     console.error('Error:', error);
+    //     this.message = 'Error sending request';
+    //   }
+    // }
   }
 };
 </script>
