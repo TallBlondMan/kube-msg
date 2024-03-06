@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import axios from '../http-commons'
+import DataService from '../services/DataService'
 
 export default {
   data() {
@@ -17,14 +17,25 @@ export default {
   },
   methods: {
     async sendRequest() {
-      try {
-        const response = await axios.post('write-to-database', { message: 'Hello from frontend!' });
-        this.message = response.data.message;
-      } catch (error) {
-        console.error('Error:', error);
-        this.message = 'Error sending request';
-      }
+      DataService.post()
+        .then(response => {
+          this.message = response.data.message
+        })
+        .catch(e => {
+          this.message = 'Error sending request';
+          alert(e)
+        })
     }
+    // DOES NOT WORK 
+    //   try {
+    //     const response = await axios.post('/write-to-database', { message: 'Hello from frontend!' });
+    //     this.message = response.data.message;
+    //   } catch (error) {
+    //     console.error('Error:', error);
+    //     this.message = 'Error sending request';
+    //   }
+    // }
+    // DOES NOT WORK EITHER
     // async sendRequest() {
     //   try {
     //     const response = await fetch(`http://${process.env.VUE_APP_API_HOST}:${process.env.VUE_APP_API_PORT}/api/write-to-database`, {
