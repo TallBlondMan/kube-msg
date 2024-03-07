@@ -9,8 +9,7 @@ services:
     ports:
     - 5432:5432
   frontend:
-    image: km-front:v1.0.7
-    
+    image: km-front:v1.0.8
     env_file: .env
     ports:
     - 8888:80

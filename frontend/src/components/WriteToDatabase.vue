@@ -2,12 +2,14 @@
   <div>
     <h1>Click the button to send data to database</h1>
     <button @click="sendRequest">Send Request</button>
+    <button @click="getHello">Get Hello!</button>
     <p>{{ message }}</p>
   </div>
 </template>
 
 <script>
-import DataService from '../services/DataService'
+//import DataService from '../services/DataService'
+import { HTTP } from '../http-commons'
 
 export default {
   data() {
@@ -17,15 +19,35 @@ export default {
   },
   methods: {
     async sendRequest() {
-      DataService.post()
-        .then(response => {
-          this.message = response.data.message
-        })
-        .catch(e => {
-          this.message = 'Error sending request';
-          alert(e)
-        })
+      HTTP.post('/write-to-database', { message: 'Hello from frontend!' })
+      .then(response => {
+        this.message = response.data.message
+      })
+      .catch(e => {
+        this.message = 'Error sending request :C'
+        console.error('Error: ', e)
+      })
+    },
+    async getHello() {
+      HTTP.get('/')
+      .then(response => {
+        this.message = response.data.message
+      })
+      .catch(e => {
+        this.message = 'Error getting response :/'
+        console.error('Error getting response: ', e)
+      })
     }
+    // async sendRequest() {
+    //   DataService.post()
+    //     .then(response => {
+    //       this.message = response.data.message
+    //     })
+    //     .catch(e => {
+    //       this.message = 'Error sending request';
+    //       alert(e)
+    //     })
+    // }
     // DOES NOT WORK 
     //   try {
     //     const response = await axios.post('/write-to-database', { message: 'Hello from frontend!' });
