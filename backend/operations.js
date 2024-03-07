@@ -45,7 +45,7 @@ const showMessage = (req, res) => {
 const displayStatus = (req, res) => {
     // Some default message to display
     res.send('Hello World!')
-    console.log(`Hello request received from ${req.ip}`);
+    console.log(`Hello request received from ${req.host}`);
 }
 // This makes sure our modules are available in app.js
 module.exports = {

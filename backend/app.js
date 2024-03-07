@@ -12,7 +12,7 @@ const corsOptions = {
 app.use(express.json());
 
 // Route to handle GET requests
-app.get('/', database.displayStatus)
+app.get('/api/hello', database.displayStatus)
 // Route to handle POST requests
 app.post('/api/write-to-database', database.sendMessage);
 // To allow CORS
