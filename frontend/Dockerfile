@@ -14,3 +14,4 @@ ENV VUE_APP_API_HOST='backend'
 ENV VUE_APP_API_PORT='3000'
 EXPOSE 80
 ENTRYPOINT [ "/app/nginx/nginx.sh" ]
+CMD [ "nginx", "-g", "daemon off;" ]

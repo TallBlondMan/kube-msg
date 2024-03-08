@@ -22,6 +22,7 @@ export default {
       HTTP.post('/write-to-database', { message: 'Hello from frontend!' })
       .then(response => {
         this.message = response.data.message
+        console.log('Sending message: ', response.data.message)
       })
       .catch(e => {
         this.message = 'Error sending request :C'
@@ -29,9 +30,10 @@ export default {
       })
     },
     async getHello() {
-      HTTP.get('/')
+      HTTP.get('/hello')
       .then(response => {
         this.message = response.data.message
+        console.log('Getting Hello: ', response.data.message)
       })
       .catch(e => {
         this.message = 'Error getting response :/'
