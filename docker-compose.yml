@@ -9,10 +9,10 @@ services:
     ports:
     - 5432:5432
   frontend:
-    image: km-front:v1.0.11
+    image: km-front:v1.0.12
     env_file: .env
     ports:
-    - 8080:80
+    - 80:80
     depends_on:
     - backend
   backend:
