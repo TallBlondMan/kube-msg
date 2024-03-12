@@ -18,6 +18,7 @@ export default {
     };
   },
   methods: {
+    // Function not ASYNC - no wait, have to change that
     async sendRequest() {
       HTTP.post('/write-to-database', { message: 'Hello from frontend!' })
       .then(response => {
