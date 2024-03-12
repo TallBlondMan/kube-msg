@@ -5,13 +5,13 @@
 </template>
 
 <script>
-// import WriteToDatabase from './components/WriteToDatabase.vue'
+import WriteToDatabase from './components/WriteToDatabase.vue'
 
 export default {
   name: 'App',
-  // components: {
-  //   WriteToDatabase
-  // }
+  components: {
+    WriteToDatabase
+  }
 }
 </script>
 
