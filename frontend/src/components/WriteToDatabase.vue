@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     // Function not ASYNC - no wait, have to change that
-    async sendRequest() {
+    sendRequest() {
       HTTP.post('/write-to-database', { message: 'Hello from frontend!' })
       .then(response => {
         this.message = response.data.message
@@ -30,7 +30,7 @@ export default {
         console.error('Error: ', e)
       })
     },
-    async getHello() {
+    getHello() {
       HTTP.get('/hello')
       .then(response => {
         this.message = response.data.message
