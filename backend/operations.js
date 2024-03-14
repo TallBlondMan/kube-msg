@@ -8,7 +8,7 @@ const database = new Pool({
     port: process.env.PG_PORT || 5432,
 });
 
-// Connect to Postgres -- but WHY FOR?  
+// Connect to Postgres -- no need as querry doesn't need a constant DB connection
 // database.connect((err) => {
 //     if (err) {
 //       console.log(`Error connecting to ${process.env.PG_HOST}`)
@@ -45,7 +45,7 @@ const showMessage = (req, res) => {
 const displayStatus = (req, res) => {
     // Some default message to display
     res.send('Hello World!')
-    console.log(`Hello request received from ${req.host}`);
+    console.log(`Hello request received from ${req.hostname}`);
 }
 // This makes sure our modules are available in app.js
 module.exports = {

@@ -18,7 +18,6 @@ export default {
     };
   },
   methods: {
-    // Function not ASYNC - no wait, have to change that
     sendRequest() {
       HTTP.post('/write-to-database', { message: 'Hello from frontend!' })
       .then(response => {
@@ -41,42 +40,6 @@ export default {
         console.error('Error getting response: ', e)
       })
     }
-    // async sendRequest() {
-    //   DataService.post()
-    //     .then(response => {
-    //       this.message = response.data.message
-    //     })
-    //     .catch(e => {
-    //       this.message = 'Error sending request';
-    //       alert(e)
-    //     })
-    // }
-    // DOES NOT WORK 
-    //   try {
-    //     const response = await axios.post('/write-to-database', { message: 'Hello from frontend!' });
-    //     this.message = response.data.message;
-    //   } catch (error) {
-    //     console.error('Error:', error);
-    //     this.message = 'Error sending request';
-    //   }
-    // }
-    // DOES NOT WORK EITHER
-    // async sendRequest() {
-    //   try {
-    //     const response = await fetch(`http://${process.env.VUE_APP_API_HOST}:${process.env.VUE_APP_API_PORT}/api/write-to-database`, {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json'
-    //       },
-    //       body: JSON.stringify({ message: 'Hello from frontend!' })
-    //     });
-    //     const data = await response.json();
-    //     this.message = data.message;
-    //   } catch (error) {
-    //     console.error('Error:', error);
-    //     this.message = 'Error sending request';
-    //   }
-    // }
   }
 };
 </script>

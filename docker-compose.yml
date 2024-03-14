@@ -9,7 +9,7 @@ services:
     ports:
     - 5432:5432
   frontend:
-    image: km-front:v1.0.13
+    image: km-front:v1.0.15
     env_file: .env
     ports:
     - 80:80
@@ -18,8 +18,8 @@ services:
   backend:
     image: km-back:v1.0.6
     env_file: .env
-    ports:
-    - 3000:3000
+    # ports:
+    # - 3000:3000
 
 volumes:
   postgres_data: 
