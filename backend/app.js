@@ -5,11 +5,8 @@ const PORT = (process.env.APP_PORT || 3000);
 
 const app = express();
 // To allow CORS - corsOptions go here
+// Don't thik I need this in 'production'
 app.use(cors());
-// const corsOptions = {
-//   origin: [`http://${process.env.CORS_SPA_HOST}:${process.env.CORS_SPA_PORT}`, 'http://localhost:8080']
-// };
-
 // Middleware to parse JSON bodies
 app.use(express.json());
 
