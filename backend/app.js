@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // Route to handle GET requests
-app.get('/api/hello', database.displayStatus)
+app.get('/api/status', database.displayStatus);
 // Route to handle POST requests
 app.post('/api/write-to-database', database.sendMessage);
 // Start the server

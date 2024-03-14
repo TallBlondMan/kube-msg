@@ -33,6 +33,7 @@ const sendMessage = (req, res) => {
         } else {
             res.status(200).json({ message: 'Message written to database successfully' });
             console.log(`Message '${message}' received`);
+            console.log('Result: ', result.rowCount)
             console.log(`Request from: ${req.ip}`);
         }
     })
@@ -43,9 +44,18 @@ const showMessage = (req, res) => {
 }
 
 const displayStatus = (req, res) => {
-    // Some default message to display
-    res.send('Hello World!')
-    console.log(`Hello request received from ${req.hostname}`);
+    // SQL querry 
+    const psql = 'SELECT COUNT(*) FROM messages'
+    database.query(psql, (err, result) => {
+        if(err) {
+            res.status(500).json({error: 'Error getting data from database'});
+            console.log('Error ', err.message)
+        } else {
+            // unmarshalling the Object given by result
+            res.status(200).json({ message: `You have ${result.rows[0].count} messages in database`});
+            console.log(`Hello request received from ${req.hostname}`);
+        }
+    })
 }
 // This makes sure our modules are available in app.js
 module.exports = {
