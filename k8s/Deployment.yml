@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: km-message
+spec:
+  selector:
+    matchLabels:
+      name: frontend
+      app: km-message
+  template:
+    metadata:
+      labels:
+        name: frontend
+        app: km-message
+    spec:
+      containers:
+      - name: frontend
+        image: tallblondman/km-front:v1.1.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  labels:
+    app: km-message
+spec:
+  selector:
+    name: frontend
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: km-message
+spec:
+  selector:
+    matchLabels:
+      app: km-message
+      name: backend
+  template:
+    metadata:
+      labels:
+        name: backend
+        app: km-message
+    spec:
+      containers:
+      - name: backend
+        image: tallblondman/km-back:v1.1.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  labels:
+    app: km-message
+spec:
+  selector:
+    name: backend
+    app: km-message
+  ports:
+  - port: 3000
+    targetPort: 3000
