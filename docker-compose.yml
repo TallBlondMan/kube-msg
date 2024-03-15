@@ -4,8 +4,8 @@ services:
     image: postgres
     env_file: .env
     volumes:
-    - postgres_data:/var/lib/postgresql
-    - ./database/create-db.sql:/docker-entrypoint-initdb.d/create.sql
+    - postgres_data:/var/lib/postgresql/data/
+    #- ./database/create-db.sql:/docker-entrypoint-initdb.d/create.sql
     ports:
     - 5432:5432
   frontend:

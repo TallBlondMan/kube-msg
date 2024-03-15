@@ -9,7 +9,6 @@ const app = express();
 app.use(cors());
 // Middleware to parse JSON bodies
 app.use(express.json());
-
 // Route to handle GET requests
 app.get('/api/status', database.displayStatus);
 // Route to handle POST requests
