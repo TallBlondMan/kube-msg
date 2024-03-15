@@ -18,6 +18,11 @@ spec:
       containers:
       - name: frontend
         image: tallblondman/km-front:v1.1.0
+        env:
+        - name: VUE_APP_API_HOST
+          value: 'backend'
+        - name: VUE_APP_API_PORT
+          value: '3000'
         resources:
           limits:
             memory: "128Mi"
@@ -36,7 +41,20 @@ spec:
     name: frontend
   ports:
   - port: 80
+    protocol: TCP
     targetPort: 80
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: database-login
+  labels:
+    app: km-message
+type: Opaque
+data:
+  PG_DATABASE: dHJ1bms=
+  PG_PASSWORD: cGFzczE=
+  PG_USER: YWRtaW4=
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -58,6 +76,22 @@ spec:
       containers:
       - name: backend
         image: tallblondman/km-back:v1.1.0
+        env:
+          - name: PG_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: database-login
+                key: PG_DATABASE
+          - name: PG_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: database-login
+                key: PG_PASSWORD
+          - name: PG_USER
+            valueFrom:
+              secretKeyRef:
+                name: database-login
+                key: PG_USER
         resources:
           limits:
             memory: "128Mi"
@@ -77,4 +111,5 @@ spec:
     app: km-message
   ports:
   - port: 3000
+    protocol: TCP
     targetPort: 3000
