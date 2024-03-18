@@ -25,7 +25,7 @@ spec:
           value: '3000'
         resources:
           limits:
-            memory: "128Mi"
+            memory: "200Mi"
             cpu: "500m"
         ports:
         - containerPort: 80
@@ -77,24 +77,24 @@ spec:
       - name: backend
         image: tallblondman/km-back:v1.1.0
         env:
-          - name: PG_DATABASE
-            valueFrom:
-              secretKeyRef:
-                name: database-login
-                key: PG_DATABASE
-          - name: PG_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: database-login
-                key: PG_PASSWORD
-          - name: PG_USER
-            valueFrom:
-              secretKeyRef:
-                name: database-login
-                key: PG_USER
+        - name: PG_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: database-login
+              key: PG_DATABASE
+        - name: PG_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: database-login
+              key: PG_PASSWORD
+        - name: PG_USER
+          valueFrom:
+            secretKeyRef:
+              name: database-login
+              key: PG_USER
         resources:
           limits:
-            memory: "128Mi"
+            memory: "200Mi"
             cpu: "500m"
         ports:
         - containerPort: 3000
@@ -113,3 +113,57 @@ spec:
   - port: 3000
     protocol: TCP
     targetPort: 3000
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: database
+  labels:
+   app: km-message
+spec:
+  selector:
+    matchLabels:
+      name: database
+      app: km-message
+  replicas: 1
+  serviceName: "database"
+  template:
+    metadata:
+      labels:
+        name: database
+        app: myapp
+    spec:
+      containers:
+      - name: database
+        image: postgres
+        env:
+        - name: PGDATA
+          value: '/var/lib/postgresql/data/pgdata'
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: database-login
+              key: PG_PASSWORD
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: database-login
+              key: PG_USER
+        ports:
+        - containerPort: 5432
+          name: db-port
+        volumeMounts:
+        - name: db-data
+          mountPath: /usr/share/nginx/html
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+  volumeClaimTemplates:
+  - metadata:
+      name: db-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
