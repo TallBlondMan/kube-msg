@@ -1,13 +1,65 @@
-const { Pool } = require('pg');
+const { Pool, Client } = require('pg');
+
+const PG_USER = process.env.PG_USER
+const PG_HOST = process.env.PG_HOST
+const PG_PASSWORD = process.env.PG_PASSWORD
+const PG_DATABASE = process.env.PG_DATABASE
+const PG_PORT = process.env.PG_PORT || 5432
+
+const dbCreate = new Client({
+    user: PG_USER,
+    host: PG_HOST,
+    password: PG_PASSWORD,
+    port: PG_PORT,
+})
+
+async function createDatabase() {
+    try {
+        await dbCreate.connect();
+        // Check if databse exist SQL querry
+        const psqlExists = `SELECT EXISTS (SELECT 1 FROM pg_database WHERE datname = ${PG_DATABASE});`;
+        const psqlExistsResult = await dbCreate.query(psqlExists);
+
+        if (!psqlExistsResult.rows[0].exists) {
+            // if there is no database create one
+            console.log('Database not found... Creating');
+            await dbCreate.query(`CREATE DATABASE ${PG_DATABASE};`);
+            console.log('Database created successfully!');
+        } else {
+            console.log('Database is in place');
+        }
+        // Connect to created database
+        //await database.query('USE trunk;'); 
+    } catch (err) {
+        console.log('Error while creating databse: ', err);
+    } finally {
+        dbCreate.end();
+    }
+}
 
 const database = new Pool({
-    user: process.env.PG_USER,
-    host: process.env.PG_HOST,
-    database: process.env.PG_DATABASE,
-    password: process.env.PG_PASSWORD,
-    port: process.env.PG_PORT || 5432,
+    user: PG_USER,
+    host: PG_HOST,
+    database: PG_DATABASE,
+    password: PG_PASSWORD,
+    port: PG_PORT,
 });
 
+async function createTables() {
+    try {
+        // Create the required tables
+        const psqlTableCreate = `
+        CREATE TABLE messages (
+            message_id SERIAL PRIMARY KEY,
+            message_content VARCHAR (50) NOT NULL
+        );`;
+        await database.query(psqlTableCreate);
+        console.log('Tables created successfully!');
+    } catch (err) {
+        console.log(`Error while creating tables: `, err)
+    }
+            
+}
 // Connect to Postgres -- no need as querry doesn't need a constant DB connection
 // database.connect((err) => {
 //     if (err) {
@@ -59,6 +111,8 @@ const displayStatus = (req, res) => {
 }
 // This makes sure our modules are available in app.js
 module.exports = {
+    createTables,
+    createDatabase,
     sendMessage,
     showMessage,
     displayStatus,
