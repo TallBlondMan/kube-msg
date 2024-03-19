@@ -195,3 +195,9 @@ spec:
   - port: 5432
     protocol: TCP
     targetPort: 5432
+
+
+# TODO
+# - Make front and back accept the service name of each other
+# - Make possible for backend to reach database
+# - Put on HELM
