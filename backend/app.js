@@ -4,8 +4,9 @@ const database = require('./operations.js')
 const PORT = (process.env.APP_PORT || 3000);
 
 const app = express();
-database.createDatabase();
-database.createTables();
+database.databaseInitialization();
+// database.createDatabase();
+//database.createTables();
 // To allow CORS - corsOptions go here
 // Don't thik I need this in 'production'
 app.use(cors());
