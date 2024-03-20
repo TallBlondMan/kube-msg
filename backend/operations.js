@@ -41,7 +41,8 @@ async function createDatabase() {
         dbCreate.end();
     }
 }
-// Scope variable
+
+// Scope variable for later use in querry
 let database
 
 async function createTables() {
@@ -128,8 +129,8 @@ const displayStatus = (req, res) => {
 // This makes sure our modules are available in app.js
 module.exports = {
     databaseInitialization,
-    createTables,
-    createDatabase,
+    // createTables,
+    // createDatabase,
     sendMessage,
     showMessage,
     displayStatus,
