@@ -83,6 +83,10 @@ spec:
         name: backend
         app: km-message
     spec:
+      initContainers:
+      - name: check-for-db
+        image: postgres:alpine
+        command: ['sh', '-c', 'until pg_isready -h database-service -q; do echo waiting; sleep 1; done']
       containers:
       - name: backend
         image: tallblondman/km-back:v1.2.0
