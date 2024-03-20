@@ -85,7 +85,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: tallblondman/km-back:v1.1.0
+        image: tallblondman/km-back:v1.2.0
         imagePullPolicy: Always
         env:
         - name: PG_HOST
@@ -197,9 +197,6 @@ spec:
         volumeMounts:
         - name: db-data
           mountPath: /usr/share/nginx/html
-        - name: init-db
-          readOnly: true
-          mountPath: /docker-entrypoint-initdb.d
         resources:
           limits:
             memory: "200Mi"
@@ -212,10 +209,6 @@ spec:
       resources:
         requests:
           storage: 300Mi
-  volumes:
-  - name: init-db
-    configMap:
-      name: database-init-sql
 ---
 apiVersion: v1
 kind: Service
@@ -233,7 +226,6 @@ spec:
   - port: 5432
     protocol: TCP
     targetPort: 5432
-
 
 # TODO
 # - Create initContainer for backend to check if database ready

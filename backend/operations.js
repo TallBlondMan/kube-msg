@@ -68,6 +68,7 @@ async function createTables() {
                 );`;
             await database.query(psqlTableCreate);
             console.log('Table created successfully!');
+            return true;
         } else {
             console.log('Table present, ready for connections')
             return true;
