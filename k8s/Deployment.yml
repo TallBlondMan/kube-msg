@@ -61,7 +61,8 @@ metadata:
     app: km-message
 type: Opaque
 data:
-  PG_DATABASE: dHJ1bms=
+  # All in base64
+  PG_DATABASE: bWVzZGIK
   PG_PASSWORD: cGFzczE=
   PG_USER: YWRtaW4=
 ---
@@ -89,7 +90,7 @@ spec:
         command: ['sh', '-c', 'until pg_isready -h database-service -q; do echo waiting; sleep 1; done']
       containers:
       - name: backend
-        image: tallblondman/km-back:v1.2.0
+        image: tallblondman/km-back:v1.2.1
         imagePullPolicy: Always
         env:
         - name: PG_HOST
@@ -141,7 +142,6 @@ metadata:
     app: km-message
 data:
   PGDATA: '/var/lib/postgresql/data/pgdata'
-  POSTGRES_DB: 'message-database'
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -166,14 +166,6 @@ spec:
       containers:
       - name: database
         image: postgres
-        readinessProbe:
-          exec:
-            command:
-            - sh 
-            - '-c'
-            - pg_isready
-          initialDelaySeconds: 5
-          periodSeconds: 5
         env:
         - name: PGDATA
           valueFrom:
@@ -182,9 +174,9 @@ spec:
               key: PGDATA
         - name: POSTGRES_DB
           valueFrom:
-            configMapKeyRef:
-              name: database-cm
-              key: POSTGRES_DB
+            secretKeyRef:
+              name: database-login
+              key: PG_DATABASE
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -232,5 +224,4 @@ spec:
     targetPort: 5432
 
 # TODO
-# - Create initContainer for backend to check if database ready
 # - Put on HELM

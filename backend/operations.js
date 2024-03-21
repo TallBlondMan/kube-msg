@@ -27,6 +27,7 @@ async function createDatabase() {
             console.log('Database not found... Creating');
             await dbCreate.query(`CREATE DATABASE ${PG_DATABASE};`);
             console.log('Database created successfully!');
+            return true;
         } else {
             console.log('Database is in place');
             // returning true for later logic
@@ -58,7 +59,7 @@ async function createTables() {
         const psqlTableExists = `SELECT EXISTS (SELECT 1 from pg_tables WHERE tablename = 'messages');`;
         const tableExistsResult = await database.query(psqlTableExists);
         // Logic for creating database 
-        if (!tableExistsResult){
+        if (!tableExistsResult.rows[0].exists){
             console.log('Table not found, creating... ')
             // This could just be CREATE IF NOT EXISTS but this way it has more logs to know what's up
             const psqlTableCreate = `
@@ -85,6 +86,8 @@ async function databaseInitialization() {
     // If creation was a success proceed or database is existing create table
     if (databaseCreated) {
         await createTables();
+    } else {
+        console.log('There was an error while creating database')
     }
 }
 
