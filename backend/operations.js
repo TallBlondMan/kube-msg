@@ -27,12 +27,9 @@ async function createDatabase() {
             console.log('Database not found... Creating');
             await dbCreate.query(`CREATE DATABASE ${PG_DATABASE};`);
             console.log('Database created successfully!');
-            return true;
         } else {
             console.log('Database is in place');
-            // returning true for later logic
-            return true;
-        }
+        } return true;
     } catch (err) {
         console.log('Error while creating databse: ', err);
         // returning false to not proceed with table creation
@@ -69,11 +66,9 @@ async function createTables() {
                 );`;
             await database.query(psqlTableCreate);
             console.log('Table created successfully!');
-            return true;
         } else {
             console.log('Table present, ready for connections')
-            return true;
-        }
+        } return true;
     } catch (err) {
         console.log(`Error while creating tables: `, err);
         return false;
