@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: message-application
+  labels:
+    app: km-message
+spec:
+  selector:
+    matchLabels:
+      name: frontend
+      app: km-message
+  template:
+    metadata:
+      labels:
+        name: frontend
+        app: km-message
+    spec:
+      containers:
+      - name: frontend
+        image: tallblondman/km-front:v1.1.0
+        imagePullPolicy: Always
+        env:
+        - name: API_HOST
+          value: 'backend-service'
+        - name: API_PORT
+          value: '3000'
+        resources:
+          limits:
+            memory: "200Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80

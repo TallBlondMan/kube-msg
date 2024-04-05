@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: message-application
+  labels:
+    app: km-message
+spec:
+  selector:
+    matchLabels:
+      app: km-message
+      name: backend
+  template:
+    metadata:
+      labels:
+        name: backend
+        app: km-message
+    spec:
+      initContainers:
+      - name: check-for-db
+        image: postgres:alpine
+        command: ['sh', '-c', 'until pg_isready -h database-service -q; do echo waiting; sleep 1; done']
+      containers:
+      - name: backend
+        image: tallblondman/km-back:v1.2.1
+        imagePullPolicy: Always
+        env:
+        - name: PG_HOST
+          value: 'database-service'
+        - name: PG_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: database-login
+              key: PG_DATABASE
+        - name: PG_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: database-login
+              key: PG_PASSWORD
+        - name: PG_USER
+          valueFrom:
+            secretKeyRef:
+              name: database-login
+              key: PG_USER
+        resources:
+          limits:
+            memory: "200Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
